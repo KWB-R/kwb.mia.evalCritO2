@@ -1,0 +1,8 @@
+Changes in kwb.mia.evalCritO2 0.2.3
+===================================
+* hsPlotCritEvents: bug-fix (wrong order of labels), for simple barplot, values are shown in bars
+
+Changes in kwb.mia.evalCritO2 0.2.2
+===================================
+* hsPlotCritEvents: simple barplot if only one Spree-km
+

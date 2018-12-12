@@ -1,0 +1,8 @@
+Package: kwb.mia.evalCritO2
+Maintainer: Hauke Sonnenberg <hauke.sonnenberg@kompetenz-wasser.de>
+Depends: kwb.base, kwb.barplot
+Author: Hauke Sonnenberg
+Version: 0.2.3
+License: GPL
+Title: Evaluation of MIA-CSO data with R
+Description: Definition of functions that will be used to produce diagrams showing the number of critical oxygen events in the river.
