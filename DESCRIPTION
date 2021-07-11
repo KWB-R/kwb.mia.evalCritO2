@@ -12,6 +12,8 @@ Authors@R:
              role = "ctb",
              email = "michael.rustler@kompetenz-wasser.de",
              comment = c(ORCID = "0000-0003-0647-7726")),
+      person(given = "MIA-CSO",
+             role = "fnd"),
       person(given = "Kompetenzzentrum Wasser Berlin gGmbH (KWB)",
              role = "cph"))
 Description: Definition of functions that will be used to produce diagrams
