@@ -19,10 +19,14 @@ Description: Definition of functions that will be used to produce diagrams
 License: MIT + file LICENSE
 URL: https://github.com/KWB-R/kwb.mia.evalCritO2
 BugReports: https://github.com/KWB-R/kwb.mia.evalCritO2/issues
-Imports: 
+Imports:
     kwb.barplot,
-    kwb.base
+    kwb.base,
+    kwb.db,
+    kwb.utils
 Remotes:
     github::kwb-r/kwb.barplot,
-    github::kwb-r/kwb.base
+    github::kwb-r/kwb.base,
+    github::kwb-r/kwb.db,
+    github::kwb-r/kwb.utils
 RoxygenNote: 7.1.1

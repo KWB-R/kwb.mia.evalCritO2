@@ -4,11 +4,14 @@
 #' 
 #' Print result of evaluation in forms of barplots into pdf file
 #' 
+#' @param strPdf path to PDF file to which to plot
+#' @param \dots further arguments passed to \code{\link{hsPlotAll}}
+#' @export
 hsPlotAllToPdf <- function(strPdf, ...) 
 {
-  hsPrepPdf(strPdf) # Open pdf device
+  kwb.utils::hsPrepPdf(strPdf) # Open pdf device
   hsPlotAll(...)   
-  dev.off() # Close pdf device
+  grDevices::dev.off() # Close pdf device
 }
 
 # hsPlotAll --------------------------------------------------------------------
@@ -17,6 +20,20 @@ hsPlotAllToPdf <- function(strPdf, ...)
 #' 
 #' Plot result of evaluation in forms of barplots, with default settings
 #' 
+#' @param strDb path to Microsoft Access Database file
+#' @param strTable name of database table containing the data to plot
+#' @param myScaled logical. Default: \code{TRUE}
+#' @param myReverse logical. Default: \code{TRUE} 
+#' @param myBeside if \code{TRUE} (the default), bars are plotted side by side
+#' @param myCexNames character expansion factor for names
+#' @param mySub subtitle. Default: ""
+#' @param dbg if \code{TRUE}, debug messages are shown
+#' @param myWidth bar width. Default: 1
+#' @param myValLabs logical. Default: \code{FALSE}
+#' @param yearsInSub logical. Default: \code{FALSE}
+#' @param lng language code, one of "en" (English, the default) or "de" (German)
+#' @param \dots further arguments passed to \code{\link{hsPlotCritEvents}}
+#' @export
 hsPlotAll <- function(
   strDb, 
   strTable, 
@@ -33,7 +50,7 @@ hsPlotAll <- function(
   ...
 ) 
 {
-  frm <- hsGetTable(mdb = strDb, tbl = strTable)
+  frm <- kwb.db::hsGetTable(mdb = strDb, tbl = strTable)
 
   # create "lookup table" mp for names of monitoring points
   mp <- NULL # c("7.2" = "TEG", "8.55" = "CAP", "12.79" = "BEL", "17.54" = "MUE")
@@ -55,8 +72,8 @@ hsPlotAll <- function(
   # xpd: to allow legend to be outside of the plot region
 #  opar <- par(mfrow = c(2,2), oma = c(1,1,1,1), mar = c(8,4,5,2), xpd = TRUE)
   
-  opar <- par(mfrow=c(2,2), oma=c(2,0,2,0))
-  on.exit(par(opar))
+  opar <- graphics::par(mfrow=c(2,2), oma=c(2,0,2,0))
+  on.exit(graphics::par(opar))
   
   # Plot event numbers and numbers of calendar days  
   vecTitles <- c(
@@ -91,7 +108,7 @@ hsPlotAll <- function(
       ...
     )
   }
-  title(mySub, outer=TRUE)
+  graphics::title(mySub, outer=TRUE)
   kmtext <- list("Schleuse M\u00FChlendamm" = 17.5, 
                  "Monbijoubr\u00FCcke" = 16.3,
                  "Abzweig BSSK" = 14.6,
@@ -106,9 +123,9 @@ hsPlotAll <- function(
                    names(kmtext), sep = ": ", collapse = "; ")
   
   if (any(frm$Spree_km != 0)) 
-    mtext(side=1, line = 0, legtext, outer=TRUE, cex = 0.7)
+    graphics::mtext(side=1, line = 0, legtext, outer=TRUE, cex = 0.7)
   
-  mtext(side=1, line = 1, nowtext, outer=TRUE, cex = 0.7)
+  graphics::mtext(side=1, line = 1, nowtext, outer=TRUE, cex = 0.7)
 }
 
 # hsGroupByYearAndKm -----------------------------------------------------------
@@ -127,7 +144,7 @@ hsPlotAll <- function(
 #' @param vecMp Vector containing pairs of km value and monitoring point name
 #' 
 #' @return Returns the matrix calculated by hsGroupBy2Fields()
-#' 
+#' @export
 hsGroupByYearAndKm <- function(
   frmData, 
   strValField, 
@@ -136,7 +153,7 @@ hsGroupByYearAndKm <- function(
   vecMp=NULL
 ) 
 {
-  mat <- hsGroupBy2Fields(frmData, strValField, "Jahr", "Spree_km", 
+  mat <- kwb.base::hsGroupBy2Fields(frmData, strValField, "Jahr", "Spree_km", 
     boolDescYr, boolDescKm)
 
   # Append name of monitoring point to km value
@@ -165,7 +182,8 @@ hsGroupByYearAndKm <- function(
 #'   the part in brackets (station name) is optional.
 #'   The part following a semicolon in \emph{myName} is treated as the station 
 #'   name. 
-#' 
+#'   
+#' @keywords internal
 hsReformatName <- function(myName) 
 {
   kmName <- strsplit(myName, ";")
@@ -183,6 +201,7 @@ hsReformatName <- function(myName)
 
 #' Reorder Matrix Columns
 #' 
+#' @keywords internal
 hsReorderMatrix <- function
 (
   matData, 
@@ -247,6 +266,7 @@ hsReorderMatrix <- function
 
 #' Next Highest Number for Nice Labelling
 #' 
+#' @keywords internal
 hsNextHighest <- function(x) 
 {
   if (x == 0) {
@@ -268,6 +288,7 @@ hsNextHighest <- function(x)
 #' 
 #' Next highest multiple of appropriate powers of ten, but at least 5
 #' 
+#' @keywords internal
 hsGetYmax <- function(
   matData, 
   myBeside, 
@@ -299,6 +320,7 @@ hsGetYmax <- function(
 #' 
 #' Sequence of numbers between 0 and 1 to be used as gray intensities
 #' 
+#' @keywords internal
 hsGrayCodes <- function(n, dbg = FALSE) 
 {
   # If there is only one gray code requested, return medium gray
@@ -323,6 +345,7 @@ hsGrayCodes <- function(n, dbg = FALSE)
 #' Given a vector of year numbers a title "of year <year>" 
 #'   or "of years <startYear> to <endYear> is returned
 #' 
+#' @keywords internal
 hsFullSubTitle <- function(mySub, vecYr) 
 {
   if (length(vecYr) == 1) {
@@ -338,12 +361,13 @@ hsFullSubTitle <- function(mySub, vecYr)
 
 # hsAddLegend ------------------------------------------------------------------
 
-#' Adds Legend to Plot
+#' Add Legend to Plot
 #' 
+#' @keywords internal
 hsAddLegend <- function(matData, vecGray, boolDescKm, boolDescYr) 
 {
   myNames <- rownames(matData)
-  myCols <- gray(vecGray)
+  myCols <- grDevices::gray(vecGray)
   if ((boolDescKm && !boolDescYr) || (!boolDescKm && boolDescYr)) {
     myNames <- rev(myNames)
     myCols <- rev(myCols)
@@ -354,7 +378,7 @@ hsAddLegend <- function(matData, vecGray, boolDescKm, boolDescYr)
   print(myCols)
   
   # xpd = TRUE, all plotting is clipped to the figure region
-  legend("top", legend = myNames, fill = myCols, horiz = TRUE, 
+  graphics::legend("top", legend = myNames, fill = myCols, horiz = TRUE, 
     box.lty = 0, inset = -0.2, xpd = TRUE)
 }
 
@@ -362,6 +386,7 @@ hsAddLegend <- function(matData, vecGray, boolDescKm, boolDescYr)
 
 #' Plot Result of Evaluation as Barplots
 #' 
+#' @keywords internal
 hsPlotCritEvents <- function(
   matData, 
   strTitle    = "Events", 
@@ -390,8 +415,8 @@ hsPlotCritEvents <- function(
   # if there is only one Spree-km, call the standard barplot function
   if (length(vecKm) == 1) {
     vals <- matData[, 1]
-    bp <- barplot(vals, names.arg = vecYr, las=2, ...)
-    text(bp, vals, labels = vals, pos = 1)
+    bp <- graphics::barplot(vals, names.arg = vecYr, las=2, ...)
+    graphics::text(bp, vals, labels = vals, pos = 1)
   }
   else {
     
@@ -442,7 +467,7 @@ hsPlotCritEvents <- function(
     # Call my personal barplot function that allows to locate the bars at 
     # proper x positions
     if (TRUE) {
-      hsBarplot(
+      kwb.barplot::hsBarplot(
         myHeight   = matData,
         myWidth    = myWidth,
         myPosition = myPosition,
@@ -452,7 +477,7 @@ hsPlotCritEvents <- function(
         dbg    = dbg,
         myAxis     = myAxis,
         myValLabs  = myValLabs,
-        col        = gray(vecGray),
+        col        = grDevices::gray(vecGray),
         names.arg  = myNames,
         cex.names  = myCexNames,
         las        = 2,
@@ -474,21 +499,21 @@ hsPlotCritEvents <- function(
         cex.names  = myCexNames,
         las        = 2,
         ylim       = c(0, myYmax),      
-        col        = gray(vecGray),
+        col        = grDevices::gray(vecGray),
         ...
       )  
     }    
   }
   
   # Put main title and sub-title
-  mtext(strTitle, 3, line = 2)
+  graphics::mtext(strTitle, 3, line = 2)
   
   #@2012-10-24;HS
   if (mySub != "") {
     if (yearsInSub) {
       mySub <- hsFullSubTitle(mySub, vecYr)
     }
-    mtext(mySub, 3, line = 2, cex = 0.8)    
+    graphics::mtext(mySub, 3, line = 2, cex = 0.8)    
   }
   
   # Add a legend to the plot
@@ -505,12 +530,12 @@ hsPlotCritEvents <- function(
 #  }
 
   # Add a grid, but without allowing to leave the plot area
-  par(xpd = FALSE)
-  grid(nx = NA, ny = NULL)
+  graphics::par(xpd = FALSE)
+  graphics::grid(nx = NA, ny = NULL)
 
   # Add a horizontal line at x = 0
-  abline(h = 0)
-  par(xpd = TRUE)  
+  graphics::abline(h = 0)
+  graphics::par(xpd = TRUE)  
 }
 
 # hsTranslate ------------------------------------------------------------------
@@ -521,8 +546,8 @@ hsPlotCritEvents <- function(
 #' 
 #' @param text.en english text (character vector of length 1 expected)
 #' @param lng target language: en = English, de = German
-#' 
-hsTranslate <- function(text.en, lng ) 
+#' @export
+hsTranslate <- function(text.en, lng)
 {
   map <- list()
   map[["de"]] <- list(
@@ -552,11 +577,12 @@ hsTranslate <- function(text.en, lng )
 #' @param dat data frame with columns \emph{Jahr}, \emph{LamEvents}, \emph{2mgEvents},
 #'   \emph{LamKalTage}, \emph{2mgKalTage}
 #' @param main \code{main} plot title
-#' 
+#' @param lng language code, one of "en" (English, the default) or "de" (German)
+#' @export
 hsPlotO2Eval <- function(dat, main = "Title?", lng = "en") 
 {
   # save default, for resetting
-  def.par <- par(no.readonly = TRUE) 
+  def.par <- graphics::par(no.readonly = TRUE) 
   
   # Prepare data for plots
   heights <- list(
@@ -564,34 +590,34 @@ hsPlotO2Eval <- function(dat, main = "Title?", lng = "en")
     matrix(c(dat[, "LamKalTage"], dat[, "2mgKalTage"]), nrow = 2, byrow=TRUE))
   
   # Prepare layout of plot with upper plot area for title and legend only
-  nf <- layout(matrix(1:3, ncol = 1, byrow = TRUE), heights=c(1, 4, 4))
+  nf <- graphics::layout(matrix(1:3, ncol = 1, byrow = TRUE), heights=c(1, 4, 4))
   
   # 1st plot: Title and legend
-  par(mar = c(0, 0, 4, 0))
-  plot.new()
-  mtext(main, side = 3, line = 2)
-  legend("top", horiz = TRUE,
+  graphics::par(mar = c(0, 0, 4, 0))
+  graphics::plot.new()
+  graphics::mtext(main, side = 3, line = 2)
+  graphics::legend("top", horiz = TRUE,
          legend = c(hsTranslate("suboptimal conditions", lng),
                     hsTranslate("critical conditions", lng)), 
-         fill = gray.colors(2))  
-  par(mar = c(3.1, 4.1, 3.1, 2.1))
+         fill = grDevices::gray.colors(2))  
+  graphics::par(mar = c(3.1, 4.1, 3.1, 2.1))
   
   # 2nd and 3rd plot: number of events/calendar days
   for (i in 1:2) {
     ylab <- ifelse(i == 1, 
                    hsTranslate("Number of events", lng),
                    hsTranslate("Number of calendar days", lng))
-    barplot(heights[[i]], 
+    graphics::barplot(heights[[i]], 
             beside = TRUE, 
             ylab = ylab,
             main = ylab,
             names.arg = dat$Jahr)
-    grid(nx = NA, ny = NULL)
-    abline(0, 0)    
+    graphics::grid(nx = NA, ny = NULL)
+    graphics::abline(0, 0)    
   }
   
   # reset graphical parameters to default
-  par(def.par)
+  graphics::par(def.par)
 }
 
 # hsPlotO2EvalPdf --------------------------------------------------------------
@@ -601,15 +627,16 @@ hsPlotO2Eval <- function(dat, main = "Title?", lng = "en")
 #' @param dat data frame with columns \emph{Jahr}, \emph{LamEvents}, \emph{2mgEvents},
 #'   \emph{LamKalTage}, \emph{2mgKalTage}
 #' @param main \code{main} plot title
-#' 
+#' @param pdffile path to PDF file to which to plot
+#' @export
 hsPlotO2EvalPdf <- function(dat, main = "Title?", pdffile = NULL) 
 {
   if (is.null(pdffile)) {
-    pdffile <- hsPrepPdf(boolLandscape=FALSE)
+    pdffile <- kwb.utils::hsPrepPdf(boolLandscape=FALSE)
   } else {
-    hsPrepPdf(pdffile, boolLandscape=FALSE)
+    kwb.utils::hsPrepPdf(pdffile, boolLandscape=FALSE)
   }
   hsPlotO2Eval(dat, main)
-  dev.off()
-  hsShowPdf(pdffile)
+  grDevices::dev.off()
+  kwb.utils::hsShowPdf(pdffile)
 }
