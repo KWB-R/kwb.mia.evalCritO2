@@ -25,3 +25,4 @@ Imports:
 Remotes:
     github::kwb-r/kwb.barplot,
     github::kwb-r/kwb.base
+RoxygenNote: 7.1.1
