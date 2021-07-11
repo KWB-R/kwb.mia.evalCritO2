@@ -1,17 +1,10 @@
-# Created: 2011-11-17
-# Updated: 2012-08-31
-  
-#@2012-08-31;HS;kwb.base and kwb.barplot do not need to be loaded as this
-#               package "depends" on them (see DESCRIPTION file)
-
 # hsPlotAllToPdf ---------------------------------------------------------------
-hsPlotAllToPdf <- function
-### Print result of evaluation in forms of barplots into pdf file
-#@2011-12-05: created
-(
-  strPdf, 
-  ...
-) 
+
+#' Plot All To PDF File
+#' 
+#' Print result of evaluation in forms of barplots into pdf file
+#' 
+hsPlotAllToPdf <- function(strPdf, ...) 
 {
   hsPrepPdf(strPdf) # Open pdf device
   hsPlotAll(...)   
@@ -19,10 +12,12 @@ hsPlotAllToPdf <- function
 }
 
 # hsPlotAll --------------------------------------------------------------------
-hsPlotAll <- function
-### Plot result of evaluation in forms of barplots, with default settings
-#@2011-11-22
-(
+
+#' Plot All
+#' 
+#' Plot result of evaluation in forms of barplots, with default settings
+#' 
+hsPlotAll <- function(
   strDb, 
   strTable, 
   myScaled = TRUE, 
@@ -38,7 +33,6 @@ hsPlotAll <- function
   ...
 ) 
 {
-
   frm <- hsGetTable(mdb = strDb, tbl = strTable)
 
   # create "lookup table" mp for names of monitoring points
@@ -118,22 +112,28 @@ hsPlotAll <- function
 }
 
 # hsGroupByYearAndKm -----------------------------------------------------------
-hsGroupByYearAndKm <- function
-### Groups input data.frame by its columns "Jahr" and "Spree_km".
-(
+
+#' Group By Year And Km
+#' 
+#' Groups input data.frame by its columns "Jahr" and "Spree_km".
+#' 
+#' @param frmData data.frame with columns "Jahr" and "Spree_km"
+#' @param strValField Name of value field in input data.frame of which for each Jahr/Spree_km 
+#'   group the sum will be calculated.
+#' @param boolDescKm if TRUE, columns in result matrix will be ordered according to decreasing
+#'   "Spree_km" values 
+#' @param boolDescYr if TRUE, columns in result matrix will be ordered according to decreasing
+#'   "Jahr" values
+#' @param vecMp Vector containing pairs of km value and monitoring point name
+#' 
+#' @return Returns the matrix calculated by hsGroupBy2Fields()
+#' 
+hsGroupByYearAndKm <- function(
   frmData, 
-  ### data.frame with columns "Jahr" and "Spree_km"
   strValField, 
-  ### Name of value field in input data.frame of which for each Jahr/Spree_km 
-  ### group the sum will be calculated.
   boolDescKm=FALSE, 
-  ### if TRUE, columns in result matrix will be ordered according to decreasing
-  ### "Spree_km" values 
   boolDescYr=FALSE,
-  ### if TRUE, columns in result matrix will be ordered according to decreasing
-  ### "Jahr" values
   vecMp=NULL
-  ### Vector containing pairs of km value and monitoring point name
 ) 
 {
   mat <- hsGroupBy2Fields(frmData, strValField, "Jahr", "Spree_km", 
@@ -155,18 +155,18 @@ hsGroupByYearAndKm <- function
     }
   }
   mat
-### Returns the matrix calculated by hsGroupBy2Fields()
 }
 
 # hsReformatName ---------------------------------------------------------------
-hsReformatName <- function
-### Label of the form "[<station>: ]km ##.#" is created from \emph{myName} where
-### the part in brackets (station name) is optional.
-### The part following a semicolon in \emph{myName} is treated as the station 
-### name. 
-(
-  myName
-) 
+
+#' Reformat Name
+#' 
+#' Label of the form "[<station>: ]km ##.#" is created from \emph{myName} where
+#'   the part in brackets (station name) is optional.
+#'   The part following a semicolon in \emph{myName} is treated as the station 
+#'   name. 
+#' 
+hsReformatName <- function(myName) 
 {
   kmName <- strsplit(myName, ";")
   myName <- ""
@@ -180,8 +180,10 @@ hsReformatName <- function
 }
 
 # hsReorderMatrix --------------------------------------------------------------
+
+#' Reorder Matrix Columns
+#' 
 hsReorderMatrix <- function
-### reorder matrix columns
 (
   matData, 
   boolXScaled, 
@@ -192,9 +194,7 @@ hsReorderMatrix <- function
   dbg = FALSE
 ) 
 {
-
   # Reorder matrix columns always according to increasing values!?
-
   if (dbg) {
     cat("In hsReorderMatrix:\n")
     cat(sprintf("boolXScaled = %s\n", boolXScaled))
@@ -244,11 +244,10 @@ hsReorderMatrix <- function
 }
 
 # hsNextHighest ----------------------------------------------------------------
-hsNextHighest <- function
-### next highest number for nice labelling
-(
-  x
-) 
+
+#' Next Highest Number for Nice Labelling
+#' 
+hsNextHighest <- function(x) 
 {
   if (x == 0) {
     return(1)
@@ -264,9 +263,12 @@ hsNextHighest <- function
 }
 
 # hsGetYmax --------------------------------------------------------------------
-hsGetYmax <- function
-### Next highest multiple of appropriate powers of ten, but at least 5
-(
+
+#' Get Ymax
+#' 
+#' Next highest multiple of appropriate powers of ten, but at least 5
+#' 
+hsGetYmax <- function(
   matData, 
   myBeside, 
   myExpand = 1.1, 
@@ -292,14 +294,13 @@ hsGetYmax <- function
 }
 
 # hsGrayCodes ------------------------------------------------------------------
-hsGrayCodes <- function
-### sequence of numbers between 0 and 1 to be used as gray intensities
-(
-  n, 
-  dbg = FALSE
-) 
-{
 
+#' Gray Codes
+#' 
+#' Sequence of numbers between 0 and 1 to be used as gray intensities
+#' 
+hsGrayCodes <- function(n, dbg = FALSE) 
+{
   # If there is only one gray code requested, return medium gray
   if(n == 1) {
     vecGray <- 0.5
@@ -316,15 +317,14 @@ hsGrayCodes <- function
 }
 
 # hsFullSubTitle ---------------------------------------------------------------
-hsFullSubTitle <- function
-### given a vector of year numbers a title "of year <year>" 
-### or "of years <startYear> to <endYear> is returned
-(
-  mySub, 
-  vecYr
-) 
-{
 
+#' Full Subtitle
+#' 
+#' Given a vector of year numbers a title "of year <year>" 
+#'   or "of years <startYear> to <endYear> is returned
+#' 
+hsFullSubTitle <- function(mySub, vecYr) 
+{
   if (length(vecYr) == 1) {
     strPeriod <- paste("of year", vecYr[1])
   }
@@ -337,14 +337,10 @@ hsFullSubTitle <- function
 }
 
 # hsAddLegend ------------------------------------------------------------------
-hsAddLegend <- function
-### adds legend to plot
-(
-  matData, 
-  vecGray, 
-  boolDescKm, 
-  boolDescYr
-) 
+
+#' Adds Legend to Plot
+#' 
+hsAddLegend <- function(matData, vecGray, boolDescKm, boolDescYr) 
 {
   myNames <- rownames(matData)
   myCols <- gray(vecGray)
@@ -363,9 +359,10 @@ hsAddLegend <- function
 }
 
 # hsPlotCritEvents -------------------------------------------------------------
-hsPlotCritEvents <- function
-### Plot result of evaluation in forms of barplots
-(
+
+#' Plot Result of Evaluation as Barplots
+#' 
+hsPlotCritEvents <- function(
   matData, 
   strTitle    = "Events", 
   mySub       = "", 
@@ -517,14 +514,15 @@ hsPlotCritEvents <- function
 }
 
 # hsTranslate ------------------------------------------------------------------
-hsTranslate <- function
-### translates \emph{text.en} into target language \emph{lng}.
-(
-  text.en,
-  ### english text (character vector of length 1 expected)
-  lng 
-  ### target language: en = English, de = German
-) 
+
+#' Translate
+#' 
+#' translates \emph{text.en} into target language \emph{lng}.
+#' 
+#' @param text.en english text (character vector of length 1 expected)
+#' @param lng target language: en = English, de = German
+#' 
+hsTranslate <- function(text.en, lng ) 
 {
   map <- list()
   map[["de"]] <- list(
@@ -548,16 +546,14 @@ hsTranslate <- function
 }
 
 # hsPlotO2Eval -----------------------------------------------------------------
-hsPlotO2Eval <- function
-### hsPlotO2Eval
-(
-  dat,
-  ### data frame with columns \emph{Jahr}, \emph{LamEvents}, \emph{2mgEvents},
-  ### \emph{LamKalTage}, \emph{2mgKalTage}
-  main = "Title?",
-  ### main plot title
-  lng = "en"
-) 
+
+#' Plot O2 Evaluation
+#' 
+#' @param dat data frame with columns \emph{Jahr}, \emph{LamEvents}, \emph{2mgEvents},
+#'   \emph{LamKalTage}, \emph{2mgKalTage}
+#' @param main \code{main} plot title
+#' 
+hsPlotO2Eval <- function(dat, main = "Title?", lng = "en") 
 {
   # save default, for resetting
   def.par <- par(no.readonly = TRUE) 
@@ -599,16 +595,14 @@ hsPlotO2Eval <- function
 }
 
 # hsPlotO2EvalPdf --------------------------------------------------------------
-hsPlotO2EvalPdf <- function
-### plot result of O2 evaluation to pdf
-(
-  dat,
-  ### data frame with columns \emph{Jahr}, \emph{LamEvents}, \emph{2mgEvents},
-  ### \emph{LamKalTage}, \emph{2mgKalTage}
-  main = "Title?",
-  ### main plot title
-  pdffile = NULL
-) 
+
+#' Plot Result of O2 Evaluation to PDF
+#' 
+#' @param dat data frame with columns \emph{Jahr}, \emph{LamEvents}, \emph{2mgEvents},
+#'   \emph{LamKalTage}, \emph{2mgKalTage}
+#' @param main \code{main} plot title
+#' 
+hsPlotO2EvalPdf <- function(dat, main = "Title?", pdffile = NULL) 
 {
   if (is.null(pdffile)) {
     pdffile <- hsPrepPdf(boolLandscape=FALSE)
