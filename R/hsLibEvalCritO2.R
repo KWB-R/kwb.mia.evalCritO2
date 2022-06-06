@@ -159,7 +159,7 @@ hsGroupByYearAndKm <- function(
   # Append name of monitoring point to km value
   if (! is.null(vecMp)) {
     cn <- colnames(mat)
-    for (i in 1:length(cn)) {
+    for (i in seq_along(cn)) {
       #@2011-12-19: use %in% instead of hsContains!
       #if (hsContains(names(vecMp), cn[i])) {
       if (cn[i] %in% names(vecMp)) {
@@ -425,7 +425,7 @@ hsPlotCritEvents <- function(
     # of the monitoring point (if any). Here we create labels of the form: 
     # "[<MP>:] km <km-value>", where the "<MP>:"-part is optional.
     myNames <- colnames(matData)
-    for (i in (1:length(myNames))) {
+    for (i in seq_along(myNames)) {
       myNames[i] <- hsReformatName(myNames[i])
     }
         
