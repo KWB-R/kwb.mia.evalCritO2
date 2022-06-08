@@ -3,6 +3,8 @@
 [![codecov](https://codecov.io/github/KWB-R/kwb.mia.evalCritO2/branch/main/graphs/badge.svg)](https://codecov.io/github/KWB-R/kwb.mia.evalCritO2)
 [![Project Status](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/kwb.mia.evalCritO2)]()
+[![R-Universe_Status_Badge](https://kwb-r.r-universe.dev/badges/kwb.mia.evalCritO2)](https://kwb-r.r-universe.dev/)
+
 
 # kwb.mia.evalCritO2
 

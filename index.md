@@ -3,26 +3,25 @@
 [![codecov](https://codecov.io/github/KWB-R/kwb.mia.evalCritO2/branch/main/graphs/badge.svg)](https://codecov.io/github/KWB-R/kwb.mia.evalCritO2)
 [![Project Status](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/kwb.mia.evalCritO2)]()
+[![R-Universe_Status_Badge](https://kwb-r.r-universe.dev/badges/kwb.mia.evalCritO2)](https://kwb-r.r-universe.dev/)
 
 Definition of functions that will be used to produce diagrams
 showing the number of critical oxygen events in the river.
 
 ## Installation
 
-For details on how to install KWB-R packages checkout our [installation tutorial](https://kwb-r.github.io/kwb.pkgbuild/articles/install.html).
+For installing the latest release of this R package run the following code below:
 
 ```r
-### Optionally: specify GitHub Personal Access Token (GITHUB_PAT)
-### See here why this might be important for you:
-### https://kwb-r.github.io/kwb.pkgbuild/articles/install.html#set-your-github_pat
+# Enable repository from kwb-r
+options(repos = c(
+  kwbr = 'https://kwb-r.r-universe.dev',
+  CRAN = 'https://cloud.r-project.org'))
 
-# Sys.setenv(GITHUB_PAT = "mysecret_access_token")
+# Download and install kwb.mia.evalCritO2 in R
+install.packages('kwb.mia.evalCritO2')
 
-# Install package "remotes" from CRAN
-if (! require("remotes")) {
-  install.packages("remotes", repos = "https://cloud.r-project.org")
-}
+# Browse the kwb.mia.evalCritO2 manual pages
+help(package = 'kwb.mia.evalCritO2')
 
-# Install KWB package 'kwb.mia.evalCritO2' from GitHub
-remotes::install_github("KWB-R/kwb.mia.evalCritO2")
 ```
