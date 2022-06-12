@@ -108,13 +108,13 @@ hsPlotAll <- function(
       ...
     )
   }
-  graphics::title(mySub, outer=TRUE)
-  kmtext <- list("Schleuse M\u00FChlendamm" = 17.5, 
-                 "Monbijoubr\u00FCcke" = 16.3,
+  graphics::title(mySub, outer = TRUE)
+  kmtext <- list("Schleuse Muehlendamm" = 17.5, 
+                 "Monbijoubruecke" = 16.3,
                  "Abzweig BSSK" = 14.6,
                  "Bellevue" = 12.8,
-                 "Gotzkowskybr\u00FCcke" = 10.3,
-                 "Caprivibr\u00FCcke" =  8.5,
+                 "Gotzkowskybruecke" = 10.3,
+                 "Caprivibruecke" =  8.5,
                  "Tegeler Weg" =  7.2,
                  "Schleuse Charlottenburg" = 6.3)
 
